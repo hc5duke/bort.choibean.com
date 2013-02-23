@@ -21,14 +21,14 @@ estimateSortFunction = (a, b) ->
   if a[0] == b[0]
     a[1] - b[1]
   else
-    if a[0] == 'South' then 1 else -1
+    if a[0] == 'South' then -1 else 1
 
 addEstimateTd = (tr, arr) ->
   dir   = arr[0]
   mins  = arr[1]
   est   = arr[2]
   color = $(est).children('hexcolor').text()
-  qual  = if dir == 'South' then 'color' else 'background-color'
+  qual  = if dir == 'South' then 'background-color' else 'color'
   td    = $("<td>#{mins}</td>")
   td.css(qual, color)
   td.appendTo(tr)
