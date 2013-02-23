@@ -1,3 +1,37 @@
 body {
   font-family: andale mono, courier new, courier;
 }
+th {
+  text-align: right;
+}
+td {
+  text-align: center;
+  width: 32px;
+}
+td .destination {
+  font-size: 10px;
+}
+td.dest_mlbr {
+  background-color: #aaeeaa;
+}
+td.dest_daly {
+  background-color: #aaaaee;
+}
+td.dest_sfia {
+  background-color: #eeeeaa;
+}
+td.dest_24th {
+  background-color: #eeaaee;
+}
+table#to_sfo td.highlighted {
+  background-color: #ff0;
+}
+table#to_dub td.highlighted {
+  background-color: #f80;
+}
+td.future, td.empty {
+  opacity: 0.2;
+}
+tr.hidden {
+  display: none;
+}
