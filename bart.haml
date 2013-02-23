@@ -5,6 +5,10 @@
 
 %html
   %head
+    %title Bortapp
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+    %meta{content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name: 'viewport' }
+    %style{type: 'text/css'}= File.read('./bart.css')
     %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
 
   %body
@@ -16,4 +20,4 @@
             - 20.times.each do
               %td &mdash;
     #data{data: {stations: stations}}
-    %script= File.read('./out/bart.js')
+    %script= File.read('./bart.js')
