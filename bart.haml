@@ -1,18 +1,19 @@
+:ruby
+  stations = %w(16th civc powl mont)
+
 !!!
 
 %html
   %head
     %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+
   %body
     %table
-      %tr
-        %td
-          1
-        %td
-          2
-      %tr
-        %td
-          1
-        %td
-          2
+      %tbody#stations
+        - stations.each do |station|
+          %tr
+            %th= station
+            - 20.times.each do
+              %td &mdash;
+    #data{data: {stations: stations}}
     %script= File.read('./out/bart.js')
