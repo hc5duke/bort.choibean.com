@@ -19,26 +19,25 @@ updateStationRows = (station, trs) ->
   updateStationRow estimates.south, trs.south
   updateStationRow estimates.north, trs.north
 
-updateStationRow = (estimates, tr) ->
-  tr.children('td').detach()
-  addEstimateTd(tr, estimate) for estimate in estimates.sort(numericSort)
-
 splitEstimates = (station) ->
   estimates = {south: [], north: []}
   for estimate in station.children('etd').children('estimate')[0..19]
-    direction = $(estimate).children('direction').text().toLowerCase()
-    color = $(estimate).children('color').text().toLowerCase()
-    mins = Number($(estimate).children('minutes').text()) || 0
-    if direction == 'south' || color == 'blue'
-      estimates[direction].push [mins, estimate]
+    parseEstimate(estimate)
+    estimates[estimate.direction].push estimate if estimate.show
   estimates
 
-numericSort = (a, b) -> a[0] - b[0]
+parseEstimate = (estimate) ->
+  $estimate         = $(estimate)
+  estimate.direction = $estimate.children('direction').text().toLowerCase()
+  estimate.color     = $estimate.children('color').text().toLowerCase()
+  estimate.minutes   = Number($estimate.children('minutes').text()) || 0
+  estimate.show      = estimate.direction == 'south' || estimate.color == 'blue'
 
-addEstimateTd = (tr, arr) ->
-  mins  = arr[0]
-  est   = arr[1]
-  hexcolor = $(est).children('hexcolor').text()
-  td    = $("<td>#{mins}</td>")
-  td.css('background-color', hexcolor)
-  td.appendTo(tr)
+updateStationRow = (estimates, tr) ->
+  tr.children('td').detach()
+  addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)
+
+sortByMinutes = (a, b) -> a.minutes - b.minutes
+
+addEstimateTd = (tr, estimate) ->
+  $("<td class='#{estimate.color}'>#{estimate.minutes}</td>").appendTo(tr)

@@ -11,17 +11,20 @@ td {
 td .destination {
   font-size: 10px;
 }
-td.dest_mlbr {
+td.green {
   background-color: #aaeeaa;
 }
-td.dest_daly {
+td.blue {
   background-color: #aaaaee;
 }
-td.dest_sfia {
+td.yellow {
   background-color: #eeeeaa;
 }
-td.dest_24th {
-  background-color: #eeaaee;
+td.red {
+  background-color: #ee88aa;
+}
+td.orange {
+  background-color: #eeaa88;
 }
 table#to_sfo td.highlighted {
   background-color: #ff0;
