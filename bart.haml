@@ -32,5 +32,9 @@
             = row(station)
     #dp
       %h3 &raquo;SF
+      %table{:border => 1, :cellspacing => 0}
+        %tbody#eb-stations-south
+          - data[:stations_eb].each do |station|
+            = row(station)
     #data{data: data}
     %script= File.read('./bart.js')

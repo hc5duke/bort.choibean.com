@@ -1,12 +1,15 @@
 $ ->
   sfStations = $('#data').data('stations-sf')
-  fetchStationData(abbr, index) for abbr, index in sfStations
+  fetchStationData(abbr, index, 'sf') for abbr, index in sfStations
+  ebStations = $('#data').data('stations-eb')
+  fetchStationData(abbr, index, 'eb') for abbr, index in ebStations
 
-fetchStationData = (abbr, index) ->
+fetchStationData = (abbr, index, area) ->
   url = writeUrl(abbr)
   trs =
-    south: $("tbody#sf-stations-south tr:nth-child(#{1 + index})")
-    north: $("tbody#sf-stations-north tr:nth-child(#{1 + index})")
+    south: $("tbody##{area}-stations-south tr:nth-child(#{1 + index})")
+    north: $("tbody##{area}-stations-north tr:nth-child(#{1 + index})")
+  delete trs.north if area == 'eb'
   $.get url, (data) ->
     station = $(data).children('root').children('station')
     updateStationRows station, trs
@@ -17,7 +20,7 @@ writeUrl = (abbr) ->
 updateStationRows = (station, trs) ->
   estimates = splitEstimates station
   updateStationRow estimates.south, trs.south
-  updateStationRow estimates.north, trs.north
+  updateStationRow estimates.north, trs.north if trs.north
 
 splitEstimates = (station) ->
   estimates = {south: [], north: []}
