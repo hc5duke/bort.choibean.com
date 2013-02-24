@@ -1,34 +1,44 @@
 $ ->
-  stations = $('#data').data('stations')
-  fetchStationData(abbr, index) for abbr, index in stations
+  sfStations = $('#data').data('stations-sf')
+  fetchStationData(abbr, index) for abbr, index in sfStations
 
-fetchStationData = (abbr, index)->
-  url = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
-  tr = $("tbody#stations tr:nth-child(#{1 + index})")
+fetchStationData = (abbr, index) ->
+  url = writeUrl(abbr)
+  trs =
+    south: $("tbody#sf-stations-south tr:nth-child(#{1 + index})")
+    north: $("tbody#sf-stations-north tr:nth-child(#{1 + index})")
   $.get url, (data) ->
     station = $(data).children('root').children('station')
-    updateStationRow station, tr
+    updateStationRows station, trs
 
-updateStationRow = (station, tr) ->
+writeUrl = (abbr) ->
+  url = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
+
+updateStationRows = (station, trs) ->
+  estimates = splitEstimates station
+  updateStationRow estimates.south, trs.south
+  updateStationRow estimates.north, trs.north
+
+updateStationRow = (estimates, tr) ->
   tr.children('td').detach()
-  estimates = for estimate in station.children('etd').children('estimate')[0..19]
-    dir = $(estimate).children('direction').text()
-    mins = Number($(estimate).children('minutes').text()) || 0
-    [dir, mins, estimate]
-  addEstimateTd(tr, estimate) for estimate in estimates.sort(estimateSortFunction)
+  addEstimateTd(tr, estimate) for estimate in estimates.sort(numericSort)
 
-estimateSortFunction = (a, b) ->
-  if a[0] == b[0]
-    a[1] - b[1]
-  else
-    if a[0] == 'South' then -1 else 1
+splitEstimates = (station) ->
+  estimates = {south: [], north: []}
+  for estimate in station.children('etd').children('estimate')[0..19]
+    direction = $(estimate).children('direction').text().toLowerCase()
+    color = $(estimate).children('color').text().toLowerCase()
+    mins = Number($(estimate).children('minutes').text()) || 0
+    if direction == 'south' || color == 'blue'
+      estimates[direction].push [mins, estimate]
+  estimates
+
+numericSort = (a, b) -> a[0] - b[0]
 
 addEstimateTd = (tr, arr) ->
-  dir   = arr[0]
-  mins  = arr[1]
-  est   = arr[2]
-  color = $(est).children('hexcolor').text()
-  qual  = if dir == 'South' then 'background-color' else 'color'
+  mins  = arr[0]
+  est   = arr[1]
+  hexcolor = $(est).children('hexcolor').text()
   td    = $("<td>#{mins}</td>")
-  td.css(qual, color)
+  td.css('background-color', hexcolor)
   td.appendTo(tr)

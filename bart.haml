@@ -1,5 +1,11 @@
 :ruby
-  stations = %w(16th civc powl mont)
+  data = {
+    stations_sf: %w(16th civc powl mont),
+    stations_eb: %w(dubl wdub)
+  }
+  def row(station)
+    "<tr><th>#{station}</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>"
+  end
 
 !!!
 
@@ -10,14 +16,21 @@
     %meta{content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name: 'viewport' }
     %style{type: 'text/css'}= File.read('./bart.css')
     %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+    %link#favicon{rel: 'shortcut icon', type: 'image/x-icon', href:'mario.ico'}
 
   %body
-    %table
-      %tbody#stations
-        - stations.each do |station|
-          %tr
-            %th= station
-            - 20.times.each do
-              %td .
-    #data{data: {stations: stations}}
+    #sf
+      %h3 &raquo;SF
+      %table{:border => 1, :cellspacing => 0}
+        %tbody#sf-stations-south
+          - data[:stations_sf].each do |station|
+            = row(station)
+      %h3 &raquo;EB
+      %table{:border => 1, :cellspacing => 0}
+        %tbody#sf-stations-north
+          - data[:stations_sf].each do |station|
+            = row(station)
+    #dp
+      %h3 &raquo;SF
+    #data{data: data}
     %script= File.read('./bart.js')
