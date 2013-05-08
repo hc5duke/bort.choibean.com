@@ -15,7 +15,6 @@
     %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
     %meta{content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name: 'viewport' }
     %style{type: 'text/css'}= File.read('./bart.css')
-    %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
     %link#favicon{rel: 'shortcut icon', type: 'image/x-icon', href:'mario.ico'}
 
   %body
@@ -37,4 +36,5 @@
           - data[:stations_eb].each do |station|
             = row(station)
     #data{data: data}
-    %script= File.read('./bart.js')
+    %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js", async: "async"}
+    %script{async: "async"}= File.read('./bart.js')

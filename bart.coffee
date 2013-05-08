@@ -1,4 +1,4 @@
-$ ->
+window.onload = ->
   sfStations = $('#data').data('stations-sf')
   fetchStationData(abbr, index, 'sf') for abbr, index in sfStations
   ebStations = $('#data').data('stations-eb')
