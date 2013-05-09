@@ -23,8 +23,10 @@ updateStationRows = (station, trs) ->
   updateStationRow estimates.north, trs.north if trs.north
 
 splitEstimates = (station) ->
-  estimates = {south: [], north: []}
-  for estimate in station.children('etd').children('estimate')[0..19]
+  estimates =
+    south: []
+    north: []
+  for estimate in station.children('etd').children('estimate')
     parseEstimate(estimate)
     estimates[estimate.direction].push estimate if estimate.show
   estimates
@@ -38,7 +40,7 @@ parseEstimate = (estimate) ->
 
 updateStationRow = (estimates, tr) ->
   tr.children('td').detach()
-  addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)
+  addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)[0..9]
 
 sortByMinutes = (a, b) -> a.minutes - b.minutes
 
