@@ -1,4 +1,16 @@
+queryObject = () ->
+  result = {}
+  queryString = location.search.slice(1)
+  re = /([^&=]+)=([^&]*)/g
+  while (m = re.exec(queryString))
+    result[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
+  result
+
+defaultColor = if new Date() < 1371668400000 then 'blue' else 'yellow'
+myLineColor = queryObject()["line"] || defaultColor
+
 window.onload = ->
+  $("#sf h3 a.btn.#{myLineColor}").hide()
   sfStations = $('#data').data('stations-sf')
   fetchStationData(abbr, index, 'sf') for abbr, index in sfStations
   ebStations = $('#data').data('stations-eb')
@@ -36,7 +48,8 @@ parseEstimate = (estimate) ->
   estimate.direction = $estimate.children('direction').text().toLowerCase()
   estimate.color     = $estimate.children('color').text().toLowerCase()
   estimate.minutes   = Number($estimate.children('minutes').text()) || 0
-  estimate.show      = estimate.direction == 'south' || estimate.color == 'blue'
+  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
 
 updateStationRow = (estimates, tr) ->
   tr.children('td').detach()

@@ -11,19 +11,19 @@ td {
 td .destination {
   font-size: 10px;
 }
-td.green {
+.green {
   background-color: #aaeeaa;
 }
-td.blue {
+.blue {
   background-color: #aaaaee;
 }
-td.yellow {
+.yellow {
   background-color: #eeeeaa;
 }
-td.red {
+.red {
   background-color: #ee88aa;
 }
-td.orange {
+.orange {
   background-color: #eeaa88;
 }
 table#to_sfo td.highlighted {
@@ -37,4 +37,13 @@ td.future, td.empty {
 }
 tr.hidden {
   display: none;
+}
+.btn {
+  color: #fff;
+  border-radius: 2px;
+  padding: 2px;
+  font-size: 0.75em;
+  line-height: 1em;
+  margin: 2px;
+  cursor: pointer;
 }

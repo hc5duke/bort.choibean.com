@@ -29,3 +29,4 @@ fi
 
 # Clean up
 rm bart.js bart.css
+mv out/bart.html out/index.html
