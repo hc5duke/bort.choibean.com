@@ -1,7 +1,7 @@
 :ruby
   data = {
     stations_sf: %w(16th civc powl mont),
-    stations_eb: %w(dubl wdub conc phil)
+    stations_eb: %w(conc phil)
   }
   def row(station)
     "<tr><th>#{station}</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>"
@@ -26,8 +26,6 @@
             = row(station)
       %h3
         &raquo;EB
-        %a.btn.blue{onclick: "location.search='?line=blue';"}blue
-        %a.btn.yellow{onclick: "location.search='?line=yellow';"}yellow
       %table{:border => 1, :cellspacing => 0}
         %tbody#sf-stations-north
           - data[:stations_sf].each do |station|

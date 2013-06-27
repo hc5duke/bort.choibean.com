@@ -6,8 +6,7 @@ queryObject = () ->
     result[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
   result
 
-defaultColor = if new Date() < 1371668400000 then 'blue' else 'yellow'
-myLineColor = queryObject()["line"] || defaultColor
+myLineColor = 'yellow'
 
 window.onload = ->
   $("#sf h3 a.btn.#{myLineColor}").hide()
