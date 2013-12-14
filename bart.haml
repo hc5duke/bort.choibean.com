@@ -36,6 +36,8 @@
         %tbody#eb-stations-south
           - data[:stations_eb].each do |station|
             = row(station)
+    .refresh
+      %a#refresh{href: "#"} Refresh();
     #data{data: data}
     %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js", async: "async"}
     %script{async: "async"}= File.read('./bart.js')

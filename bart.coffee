@@ -10,10 +10,17 @@ myLineColor = 'yellow'
 
 window.onload = ->
   $("#sf h3 a.btn.#{myLineColor}").hide()
-  sfStations = $('#data').data('stations-sf')
-  fetchStationData(abbr, index, 'sf') for abbr, index in sfStations
-  ebStations = $('#data').data('stations-eb')
-  fetchStationData(abbr, index, 'eb') for abbr, index in ebStations
+  $('#refresh').click (e) ->
+    refresh()
+    e.preventDefault()
+  refresh()
+
+refresh = ->
+  refreshDirection('sf')
+  refreshDirection('eb')
+
+refreshDirection = (direction) ->
+  fetchStationData(abbr, index, direction) for abbr, index in $('#data').data("stations-#{direction}")
 
 fetchStationData = (abbr, index, area) ->
   url = writeUrl(abbr)
@@ -21,6 +28,7 @@ fetchStationData = (abbr, index, area) ->
     south: $("tbody##{area}-stations-south tr:nth-child(#{1 + index})")
     north: $("tbody##{area}-stations-north tr:nth-child(#{1 + index})")
   delete trs.north if area == 'eb'
+  tr.children('th').addClass('loading') for key, tr of trs
   $.get url, (data) ->
     station = $(data).children('root').children('station')
     updateStationRows station, trs
@@ -52,6 +60,7 @@ parseEstimate = (estimate) ->
 
 updateStationRow = (estimates, tr) ->
   tr.children('td').detach()
+  tr.children('th').removeClass('loading')
   addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)[0..9]
 
 sortByMinutes = (a, b) -> a.minutes - b.minutes
