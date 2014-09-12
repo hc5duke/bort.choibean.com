@@ -1,7 +1,7 @@
 :ruby
   data = {
-    stations_sf: %w(16th civc powl),
-    stations_eb: %w(conc phil)
+    stationssf: %w(16th civc powl),
+    stationseb: %w(conc phil)
   }
   def row(station)
     "<tr><th>#{station}</th>#{"<td></td>" * 6}</tr>"
@@ -22,19 +22,19 @@
       %h3 &raquo;SF
       %table{:border => 1, :cellspacing => 0}
         %tbody#sf-stations-south
-          - data[:stations_sf].each do |station|
+          - data[:stationssf].each do |station|
             = row(station)
       %h3
         &raquo;EB
       %table{:border => 1, :cellspacing => 0}
         %tbody#sf-stations-north
-          - data[:stations_sf].each do |station|
+          - data[:stationssf].each do |station|
             = row(station)
     #dp
       %h3 &raquo;SF
       %table{:border => 1, :cellspacing => 0}
         %tbody#eb-stations-south
-          - data[:stations_eb].each do |station|
+          - data[:stationseb].each do |station|
             = row(station)
     .refresh
       %a#refresh{href: "#"} Refresh();

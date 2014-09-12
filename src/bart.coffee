@@ -9,18 +9,19 @@ queryObject = () ->
 myLineColor = 'yellow'
 
 window.onload = ->
-  $("#sf a.#{myLineColor}").hide()
-  $('#refresh').click (e) ->
+  refresh()
+  document.getElementById('refresh').onclick = (e) ->
     refresh()
     e.preventDefault()
-  refresh()
 
 refresh = ->
   refreshDirection('sf')
   refreshDirection('eb')
 
 refreshDirection = (direction) ->
-  fetchStationData(abbr, index, direction) for abbr, index in $('#data').data("stations-#{direction}")
+  data = JSON.parse(document.getElementById('data').dataset["stations#{direction}"])
+  for abbr, index in data
+    fetchStationData(abbr, index, direction)
 
 fetchStationData = (abbr, index, area) ->
   url = writeUrl(abbr)
@@ -38,8 +39,8 @@ writeUrl = (abbr) ->
 
 updateStationRows = (station, trs) ->
   estimates = splitEstimates station
-  updateStationRow estimates.south, trs.south
-  updateStationRow estimates.north, trs.north if trs.north
+  updateStationRow estimates.south, trs.south[0]
+  updateStationRow estimates.north, trs.north[0] if trs.north
 
 splitEstimates = (station) ->
   estimates =
@@ -59,11 +60,19 @@ parseEstimate = (estimate) ->
   estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
 
 updateStationRow = (estimates, tr) ->
-  tr.children('td').detach()
-  tr.children('th').removeClass('loading')
+  removeThese = []
+  for child in tr.childNodes
+    if child.tagName == 'TD'
+      removeThese.push child
+    else if child.tagName == 'TH'
+      child.className = child.className.replace(/\ ?loading\ ?/, '')
+  tr.removeChild(td) for td in removeThese
   addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)[0..9]
 
 sortByMinutes = (a, b) -> a.minutes - b.minutes
 
 addEstimateTd = (tr, estimate) ->
-  $("<td class='#{estimate.color}'>#{estimate.minutes}</td>").appendTo(tr)
+  td = document.createElement("td")
+  td.className = estimate.color
+  td.innerText = estimate.minutes
+  tr.appendChild td
