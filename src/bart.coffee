@@ -9,7 +9,7 @@ queryObject = () ->
 myLineColor = 'yellow'
 
 window.onload = ->
-  $("#sf h3 a.btn.#{myLineColor}").hide()
+  $("#sf a.#{myLineColor}").hide()
   $('#refresh').click (e) ->
     refresh()
     e.preventDefault()

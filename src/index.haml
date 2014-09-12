@@ -4,7 +4,7 @@
     stations_eb: %w(conc phil)
   }
   def row(station)
-    "<tr><th>#{station}</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>"
+    "<tr><th>#{station}</th>#{"<td></td>" * 6}</tr>"
   end
 
 !!!
@@ -39,5 +39,5 @@
     .refresh
       %a#refresh{href: "#"} Refresh();
     #data{data: data}
-    %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js", async: "async"}
+    %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", async: "async"}
     %script{async: "async"}= File.read("#{::Dir.pwd}/tmp/bart.min.js")
