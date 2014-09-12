@@ -1,6 +1,6 @@
 :ruby
   data = {
-    stations_sf: %w(16th civc powl mont),
+    stations_sf: %w(16th civc powl),
     stations_eb: %w(conc phil)
   }
   def row(station)
@@ -14,7 +14,7 @@
     %title Bortapp
     %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
     %meta{content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name: 'viewport' }
-    %style{type: 'text/css'}= File.read('./bart.css')
+    %style{type: 'text/css'}= File.read("#{::Dir.pwd}/tmp/bart.min.css")
     %link#favicon{rel: 'shortcut icon', type: 'image/x-icon', href:'mario.ico'}
 
   %body
@@ -40,4 +40,4 @@
       %a#refresh{href: "#"} Refresh();
     #data{data: data}
     %script{src: "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js", async: "async"}
-    %script{async: "async"}= File.read('./bart.js')
+    %script{async: "async"}= File.read("#{::Dir.pwd}/tmp/bart.min.js")

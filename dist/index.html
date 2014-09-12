@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bortapp</title>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport'>
+    <style type='text/css'>body{font-family:andale mono,courier new,courier}th{text-align:right}td{text-align:center;width:32px}td .destination{font-size:10px}th.loading{background-color:#444;color:#fff}.green{background-color:#aea}.blue{background-color:#aae}.yellow{background-color:#eea}.red{background-color:#e8a}.orange{background-color:#ea8}table#to_sfo td.highlighted{background-color:#ff0}table#to_dub td.highlighted{background-color:#f80}td.empty,td.future{opacity:.2}tr.hidden{display:none}.btn{color:#fff;border-radius:2px;padding:2px;font-size:.75em;line-height:1em;margin:2px;cursor:pointer}</style>
+    <link href='mario.ico' id='favicon' rel='shortcut icon' type='image/x-icon'>
+  </head>
+  <body>
+    <div id='sf'>
+      <h3>&raquo;SF</h3>
+      <table border='1' cellspacing='0'>
+        <tbody id='sf-stations-south'>
+          <tr><th>16th</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>civc</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>powl</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <h3>
+        &raquo;EB
+      </h3>
+      <table border='1' cellspacing='0'>
+        <tbody id='sf-stations-north'>
+          <tr><th>16th</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>civc</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>powl</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div id='dp'>
+      <h3>&raquo;SF</h3>
+      <table border='1' cellspacing='0'>
+        <tbody id='eb-stations-south'>
+          <tr><th>conc</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th>phil</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class='refresh'>
+      <a href='#' id='refresh'>Refresh();</a>
+    </div>
+    <div data-stations-eb='["conc", "phil"]' data-stations-sf='["16th", "civc", "powl"]' id='data'></div>
+    <script async='async' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script async='async'>(function(){var a,b,c,d,e,f,g,h,i,j,k,l;e=function(){var a,b,c,d;for(d={},b=location.search.slice(1),c=/([^&=]+)=([^&]*)/g;a=c.exec(b);)d[decodeURIComponent(a[1])]=decodeURIComponent(a[2]);return d},c="yellow",window.onload=function(){return $("#sf h3 a.btn."+c).hide(),$("#refresh").click(function(a){return f(),a.preventDefault()}),f()},f=function(){return g("sf"),g("eb")},g=function(a){var c,d,e,f,g,h;for(g=$("#data").data("stations-"+a),h=[],d=e=0,f=g.length;f>e;d=++e)c=g[d],h.push(b(c,d,a));return h},b=function(a,b,c){var d,e,f,g;g=l(a),f={south:$("tbody#"+c+"-stations-south tr:nth-child("+(1+b)+")"),north:$("tbody#"+c+"-stations-north tr:nth-child("+(1+b)+")")},"eb"===c&&delete f.north;for(d in f)e=f[d],e.children("th").addClass("loading");return $.get(g,function(a){var b;return b=$(a).children("root").children("station"),k(b,f)})},l=function(a){var b;return b="http://api.bart.gov/api/etd.aspx?cmd=etd&orig="+a+"&key=MW9S-E7SL-26DU-VV8V"},k=function(a,b){var c;return c=i(a),j(c.south,b.south),b.north?j(c.north,b.north):void 0},i=function(a){var b,c,e,f,g;for(c={south:[],north:[]},g=a.children("etd").children("estimate"),e=0,f=g.length;f>e;e++)b=g[e],d(b),b.show&&c[b.direction].push(b);return c},d=function(a){var b;return b=$(a),a.direction=b.children("direction").text().toLowerCase(),a.color=b.children("color").text().toLowerCase(),a.minutes=Number(b.children("minutes").text())||0,a.show="south"===a.direction||a.color===c,a.show="south"===a.direction||a.color===c},j=function(b,c){var d,e,f,g,i;for(c.children("td").detach(),c.children("th").removeClass("loading"),g=b.sort(h).slice(0,10),i=[],e=0,f=g.length;f>e;e++)d=g[e],i.push(a(c,d));return i},h=function(a,b){return a.minutes-b.minutes},a=function(a,b){return $("<td class='"+b.color+"'>"+b.minutes+"</td>").appendTo(a)}}).call(this);</script>
+  </body>
+</html>
