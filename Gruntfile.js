@@ -35,7 +35,7 @@
 
       haml: {
         dist: {
-          files: { 'dist/index.html': 'src/index.haml' }
+          files: { 'tmp/index.html': 'src/index.haml' }
         }
       },
 
@@ -64,6 +64,18 @@
         }
       },
 
+      htmlmin: {
+        dist: {
+          options: {
+            removeComments: true,
+            collapseWhitespace: true
+          },
+          files: {
+            'dist/index.html': 'tmp/index.html',
+          }
+        }
+      },
+
       nodemon: {
         dev: {
           script: 'server.js',
@@ -87,6 +99,7 @@
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-s3');
 
@@ -98,7 +111,8 @@
       'sass',
       'uglify', // minify FE javascript
       'cssmin', // concat FE css
-      'haml'    // needs access to minified files
+      'haml',   // needs access to minified files
+      'htmlmin' // finally, minify html
     ]);
 
     grunt.registerTask('default', [
