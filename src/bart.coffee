@@ -25,38 +25,49 @@ refreshDirection = (direction) ->
 
 fetchStationData = (abbr, index, area) ->
   url = writeUrl(abbr)
-  trs =
-    south: $("tbody##{area}-stations-south tr:nth-child(#{1 + index})")
-    north: $("tbody##{area}-stations-north tr:nth-child(#{1 + index})")
-  delete trs.north if area == 'eb'
-  tr.children('th').addClass('loading') for key, tr of trs
-  $.get url, (data) ->
-    station = $(data).children('root').children('station')
-    updateStationRows station, trs
+  trs = south: document.getElementById("#{area}-stations-south").getElementsByTagName('tr')[index]
+  trs.north =  document.getElementById("#{area}-stations-north").getElementsByTagName('tr')[index] if area != 'eb'
+  for key, tr of trs
+    for th in tr.getElementsByTagName('th')
+      th.className += ' loading'
+  xmlhttp = new XMLHttpRequest()
+  xmlhttp.onreadystatechange = ->
+    if (xmlhttp.readyState == 4)
+      if(xmlhttp.status == 200)
+        data = xmlhttp.responseXML
+        window.data = data
+        station = data.getElementsByTagName("station")[0]
+        updateStationRows station, trs
+      else if(xmlhttp.status == 400)
+        alert('There was an error 400')
+      else
+        alert('something else other than 200 was returned')
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
 
 writeUrl = (abbr) ->
   url = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
 
 updateStationRows = (station, trs) ->
   estimates = splitEstimates station
-  updateStationRow estimates.south, trs.south[0]
-  updateStationRow estimates.north, trs.north[0] if trs.north
+  updateStationRow estimates.south, trs.south
+  updateStationRow estimates.north, trs.north if trs.north
 
 splitEstimates = (station) ->
   estimates =
     south: []
     north: []
-  for estimate in station.children('etd').children('estimate')
+  ests = station.getElementsByTagName('estimate')
+  for estimate in ests
     parseEstimate(estimate)
     estimates[estimate.direction].push estimate if estimate.show
   estimates
 
 parseEstimate = (estimate) ->
-  $estimate         = $(estimate)
-  estimate.direction = $estimate.children('direction').text().toLowerCase()
-  estimate.color     = $estimate.children('color').text().toLowerCase()
-  estimate.minutes   = Number($estimate.children('minutes').text()) || 0
-  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+  estimate.direction = estimate.getElementsByTagName('direction')[0].innerHTML.toLowerCase()
+  estimate.color     = estimate.getElementsByTagName('color')[0].innerHTML.toLowerCase()
+  estimate.minutes   = Number(estimate.getElementsByTagName('minutes')[0].innerHTML) || 0
   estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
 
 updateStationRow = (estimates, tr) ->

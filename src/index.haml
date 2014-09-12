@@ -39,5 +39,4 @@
     .refresh
       %a#refresh{href: "#"} Refresh();
     #data{data: data}
-    %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", async: "async"}
     %script{async: "async"}= File.read("#{::Dir.pwd}/tmp/bart.min.js")
