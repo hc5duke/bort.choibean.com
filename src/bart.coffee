@@ -64,10 +64,13 @@ splitEstimates = (station) ->
     estimates[estimate.direction].push estimate if estimate.show
   estimates
 
+extractText = (elem, tag) ->
+  elem.getElementsByTagName(tag)[0].textContent.toLowerCase()
+
 parseEstimate = (estimate) ->
-  estimate.direction = estimate.getElementsByTagName('direction')[0].innerHTML.toLowerCase()
-  estimate.color     = estimate.getElementsByTagName('color')[0].innerHTML.toLowerCase()
-  estimate.minutes   = Number(estimate.getElementsByTagName('minutes')[0].innerHTML) || 0
+  estimate.direction = extractText(estimate, 'direction')
+  estimate.color     = extractText(estimate, 'color')
+  estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
   estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
 
 updateStationRow = (estimates, tr) ->
