@@ -105,6 +105,16 @@
 
     // launch time bootstrap tasks
     grunt.registerTask('deploy', [ 'prep-dist-dir', 's3' ]);
+    grunt.registerTask('fixhtmlminbug', 'htmlmin has a bug', function() {
+      grunt.log.writeln('Fixing');
+      var fs = require('fs');
+      var distPath = "./dist/index.html";
+      var result = fs.readFileSync(distPath, 'utf8').
+        replace(/(initial-scale=1)/g, ' $1').
+        replace(/(maximum-scale=1;)/g, ' $1 ');
+      fs.writeFileSync(distPath, result, 'utf8');
+    });
+
 
     grunt.registerTask('prep-dist-dir', [
       'coffee',
@@ -112,7 +122,8 @@
       'uglify', // minify FE javascript
       'cssmin', // concat FE css
       'haml',   // needs access to minified files
-      'htmlmin' // finally, minify html
+      'htmlmin',// finally, minify html
+      'fixhtmlminbug' // html min bug - TODO: pull request
     ]);
 
     grunt.registerTask('default', [
