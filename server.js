@@ -7,5 +7,7 @@
 
   // server config
   var port = process.env.PORT || 3111;
-  var server = app.listen(port);
+  var server = app.listen(port, function(){
+    console.log(port);
+  });
 })();

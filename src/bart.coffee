@@ -29,7 +29,7 @@ fetchStationData = (abbr, index, area) ->
   trs.north =  document.getElementById("#{area}-stations-north").getElementsByTagName('tr')[index] if area != 'eb'
   for key, tr of trs
     for th in tr.getElementsByTagName('th')
-      th.className += ' loading'
+      th.className = th.className.replace(/\ ?error\ ?/, '') + ' loading'
   xmlhttp = new XMLHttpRequest()
   xmlhttp.onreadystatechange = ->
     if (xmlhttp.readyState == 4)
@@ -38,10 +38,10 @@ fetchStationData = (abbr, index, area) ->
         window.data = data
         station = data.getElementsByTagName("station")[0]
         updateStationRows station, trs
-      else if(xmlhttp.status == 400)
-        alert('There was an error 400')
       else
-        alert('something else other than 200 was returned')
+        for key, tr of trs
+          for th in tr.getElementsByTagName('th')
+            th.className = th.className.replace(/\ ?loading\ ?/, '') + " error"
 
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
@@ -79,7 +79,7 @@ updateStationRow = (estimates, tr) ->
     if child.tagName == 'TD'
       removeThese.push child
     else if child.tagName == 'TH'
-      child.className = child.className.replace(/\ ?loading\ ?/, '')
+      child.className = child.className.replace(/\ ?error\ ?/, '').replace(/\ ?loading\ ?/, '')
   tr.removeChild(td) for td in removeThese
   addEstimateTd(tr, estimate) for estimate in estimates.sort(sortByMinutes)[0..9]
 
