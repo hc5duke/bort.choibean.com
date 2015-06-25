@@ -1,3 +1,5 @@
+EB_STATIONS = ['phil', 'conc']
+
 queryObject = () ->
   result = {}
   queryString = location.search.slice(1)
@@ -35,7 +37,7 @@ fetchStationData = (abbr, index, area) ->
     if (xmlhttp.readyState == 4)
       if(xmlhttp.status == 200)
         data = xmlhttp.responseXML
-        window.data = data
+        #window.data = data
         station = data.getElementsByTagName("station")[0]
         updateStationRows station, trs
       else
@@ -43,8 +45,8 @@ fetchStationData = (abbr, index, area) ->
           for th in tr.getElementsByTagName('th')
             th.className = th.className.replace(/\ ?loading\ ?/, '') + " error"
 
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
+  xmlhttp.open("GET", url, true)
+  xmlhttp.send()
 
 writeUrl = (abbr) ->
   url = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
@@ -72,6 +74,8 @@ parseEstimate = (estimate) ->
   estimate.color     = extractText(estimate, 'color')
   estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
   estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+  dest = estimate.parentElement.getElementsByTagName('abbreviation')[0]
+  estimate.dest      = dest.innerHTML || dest.textContent
 
 updateStationRow = (estimates, tr) ->
   removeThese = []
@@ -88,5 +92,22 @@ sortByMinutes = (a, b) -> a.minutes - b.minutes
 addEstimateTd = (tr, estimate) ->
   td = document.createElement("td")
   td.className = estimate.color
-  td.innerText = estimate.minutes
+  if unusualDestination(tr.firstChild.innerText, estimate.dest)
+    td.innerHTML = estimate.minutes + "<span class='dest'>" + (estimate.dest||'?')[0] + "</span>"
+  else
+    td.innerText = estimate.minutes
   tr.appendChild td
+
+usualDestinations =
+  fromSf:
+    PITT: true
+    SFIA: true
+    MLBR: true
+    DALY: true
+    '24TH': true
+  fromEb:
+    SFIA: true
+
+unusualDestination = (station, dest) ->
+  src = if station in EB_STATIONS then 'fromEb' else 'fromSf'
+  !usualDestinations[src][dest]
