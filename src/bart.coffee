@@ -9,7 +9,7 @@ queryObject = () ->
   result
 
 myLineColor = 'yellow'
-myLineColor = 'yellow-plus'
+myLineColor2 = 'yellow-plus'
 
 window.onload = ->
   refresh()
@@ -17,9 +17,25 @@ window.onload = ->
     refresh()
     e.preventDefault()
 
+  document.getElementById('toggle').onclick = (e) ->
+    toggle()
+    e.preventDefault()
+
 refresh = ->
   refreshDirection('sf')
   refreshDirection('eb')
+
+# by default hide destination
+showDest = false
+toggle = ->
+  if showDest
+    showDest = false
+    el.style.display = 'inherit' for el in document.getElementsByClassName('dest')
+    el.style.display = 'none' for el in document.getElementsByClassName('dest-all')
+  else
+    showDest = true
+    el.style.display = 'none' for el in document.getElementsByClassName('dest')
+    el.style.display = 'inherit' for el in document.getElementsByClassName('dest-all')
 
 refreshDirection = (direction) ->
   data = JSON.parse(document.getElementById('data').dataset["stations#{direction}"])
@@ -77,13 +93,15 @@ parseEstimate = (estimate, station) ->
   estimate.dest      = dest.innerHTML || dest.textContent
   estimate.direction = extractText(estimate, 'direction')
   estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
-  estimate.color     = extractText(estimate, 'color')
-
-  # new trains departing from pleasant hill, going to daly city
-  if estimate.color && estimate.src == 'PHIL' && estimate.dest == 'DALY'
-    estimate.color = myLineColor2
-
+  estimate.color     = figureOutColor(estimate)
   estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+
+figureOutColor = (estimate) ->
+  color = extractText(estimate, 'color')
+  # new trains departing from pleasant hill, going to daly city
+  if !color && (estimate.src == 'PHIL' && estimate.dest == 'DALY' || estimate.dest == '24TH')
+    color = myLineColor2
+  color
 
 updateStationRow = (estimates, tr) ->
   removeThese = []
@@ -100,10 +118,13 @@ sortByMinutes = (a, b) -> a.minutes - b.minutes
 addEstimateTd = (tr, estimate) ->
   td = document.createElement("td")
   td.className = estimate.color
+  html = "<nobr>"
   if unusualDestination(tr.firstChild.innerText, estimate.dest)
-    td.innerHTML = estimate.minutes + "<span class='dest'>" + (estimate.dest||'?')[0] + "</span>"
+    html += estimate.minutes + "<span class='dest'>" + (estimate.dest||'?')[0] + "</span>"
   else
-    td.innerText = estimate.minutes
+    html += estimate.minutes
+  html += "<span class='dest-all'>" + estimate.dest + "</span></nobr>"
+  td.innerHTML = html
   tr.appendChild td
 
 usualDestinations =

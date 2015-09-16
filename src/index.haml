@@ -36,7 +36,9 @@
         %tbody#eb-stations-south
           - data[:stationseb].each do |station|
             = row(station)
-    .refresh
+    .refresh.left
       %a#refresh{href: "#"} Refresh();
-    #data{data: data}
+    .refresh.right
+      %a#toggle{href: "#"} Toggle();
+    #data.clear{data: data}
     %script{async: "async"}= File.read("#{::Dir.pwd}/tmp/bart.min.js")

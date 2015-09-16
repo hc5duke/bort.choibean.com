@@ -5,11 +5,15 @@ th {
   text-align: right;
 }
 td {
+  white-space: nowrap;
   text-align: center;
   width: 32px;
 }
-td .dest {
+td .dest, td .dest-all {
   font-size: 10px;
+}
+td .dest-all {
+  display: none;
 }
 th.loading {
   background-color: #444;
@@ -18,6 +22,15 @@ th.loading {
 th.error {
   background-color: #f88;
   color: #000;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.clear {
+  clear: both;
 }
 .green {
   background-color: #aaeeaa;
@@ -31,30 +44,12 @@ th.error {
 .yellow {
   background-color: #eeeeaa;
 }
+.white {
+  background-color: #ccc;
+}
 .red {
   background-color: #ee88aa;
 }
 .orange {
   background-color: #eeaa88;
-}
-table#to_sfo td.highlighted {
-  background-color: #ff0;
-}
-table#to_dub td.highlighted {
-  background-color: #f80;
-}
-td.future, td.empty {
-  opacity: 0.2;
-}
-tr.hidden {
-  display: none;
-}
-.btn {
-  color: #fff;
-  border-radius: 2px;
-  padding: 2px;
-  font-size: 0.75em;
-  line-height: 1em;
-  margin: 2px;
-  cursor: pointer;
 }
