@@ -94,7 +94,7 @@ parseEstimate = (estimate, station) ->
   estimate.direction = extractText(estimate, 'direction')
   estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
   estimate.color     = figureOutColor(estimate)
-  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor || estimate.dest == 'PHIL'
 
 figureOutColor = (estimate) ->
   color = extractText(estimate, 'color')
