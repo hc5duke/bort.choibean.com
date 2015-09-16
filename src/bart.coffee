@@ -9,6 +9,7 @@ queryObject = () ->
   result
 
 myLineColor = 'yellow'
+myLineColor = 'yellow-plus'
 
 window.onload = ->
   refresh()
@@ -57,11 +58,13 @@ updateStationRows = (station, trs) ->
   updateStationRow estimates.north, trs.north if trs.north
 
 splitEstimates = (station) ->
+  src = station.getElementsByTagName('abbr')[0].textContent
   estimates =
     south: []
     north: []
   ests = station.getElementsByTagName('estimate')
   for estimate in ests
+    estimate.src = src
     parseEstimate(estimate)
     estimates[estimate.direction].push estimate if estimate.show
   estimates
@@ -69,13 +72,18 @@ splitEstimates = (station) ->
 extractText = (elem, tag) ->
   elem.getElementsByTagName(tag)[0].textContent.toLowerCase()
 
-parseEstimate = (estimate) ->
-  estimate.direction = extractText(estimate, 'direction')
-  estimate.color     = extractText(estimate, 'color')
-  estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
-  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
+parseEstimate = (estimate, station) ->
   dest = estimate.parentElement.getElementsByTagName('abbreviation')[0]
   estimate.dest      = dest.innerHTML || dest.textContent
+  estimate.direction = extractText(estimate, 'direction')
+  estimate.minutes   = Number(extractText(estimate, 'minutes')) || 0
+  estimate.color     = extractText(estimate, 'color')
+
+  # new trains departing from pleasant hill, going to daly city
+  if estimate.color && estimate.src == 'PHIL' && estimate.dest == 'DALY'
+    estimate.color = myLineColor2
+
+  estimate.show      = estimate.direction == 'south' || estimate.color == myLineColor
 
 updateStationRow = (estimates, tr) ->
   removeThese = []
