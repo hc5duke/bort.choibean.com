@@ -66,7 +66,7 @@ fetchStationData = (abbr, index, area) ->
   xmlhttp.send()
 
 writeUrl = (abbr) ->
-  url = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
+  url = "//api.bart.gov/api/etd.aspx?cmd=etd&orig=#{abbr}&key=MW9S-E7SL-26DU-VV8V"
 
 updateStationRows = (station, trs) ->
   estimates = splitEstimates station
