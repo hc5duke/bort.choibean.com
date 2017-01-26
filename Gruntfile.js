@@ -28,7 +28,11 @@
         },
         default: {
           upload: [
-            { src: 'dist/index.html', dest: '/index.html' }
+            { src: 'dist/index.html', dest: '/index.html' },
+            { src: 'res/touch-icon-ipad-retina.png', dest: '/touch-icon-ipad-retina.png' },
+            { src: 'res/touch-icon-ipad.png', dest: '/touch-icon-ipad.png' },
+            { src: 'res/touch-icon-iphone-retina.png', dest: '/touch-icon-iphone-retina.png' },
+            { src: 'res/touch-icon-iphone.png', dest: '/touch-icon-iphone.png' },
           ]
         }
       },

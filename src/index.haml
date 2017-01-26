@@ -16,7 +16,10 @@
     %meta{content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name: 'viewport' }
     %style{type: 'text/css'}= File.read("#{::Dir.pwd}/tmp/bart.min.css")
     %link#favicon{rel: 'shortcut icon', type: 'image/x-icon', href:'mario.ico'}
-
+    %link{rel: 'apple-touch-icon', href: '/touch-icon-iphone.png' }
+    %link{rel: 'apple-touch-icon', sizes: '76x76', href: '/touch-icon-ipad.png' }
+    %link{rel: 'apple-touch-icon', sizes: '120x120', href: '/touch-icon-iphone-retina.png' }
+    %link{rel: 'apple-touch-icon', sizes: '152x152', href: '/touch-icon-ipad-retina.png' }
   %body
     #sf
       %h3 &raquo;SF
